@@ -1,4 +1,4 @@
-ㄹpackage com.example.demo.controller.error;
+package com.example.demo.controller.error;
 
 import com.example.demo.constatnt.ErrorCode;
 import com.example.demo.exception.GeneralException;
