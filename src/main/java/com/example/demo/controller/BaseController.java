@@ -10,8 +10,5 @@ public class BaseController {
     public String root(){
         return "index";
     }
-    @GetMapping("/error")
-    public String error(){
-        return "error";
-    }
+
 }
