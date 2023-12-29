@@ -15,12 +15,13 @@ public class APIEventController {
 
     @GetMapping("/events")
     public List<String> getEvents() {
-        return List.of("event1", "event2");
+        throw new GeneralException("일반 오류");
+//        return List.of("event1", "event2");
     }
 
     @PostMapping("/events")
     public Boolean createEvent() {
-        throw new RuntimeException("hello");
+        throw new RuntimeException("런타임 오류");
 //        return true;
     }
 
@@ -39,17 +40,4 @@ public class APIEventController {
         return true;
     }
 
-    @ExceptionHandler
-    public ResponseEntity<APIErrorResponse> general(GeneralException e){
-        ErrorCode errorCode = e.getErrorCode();
-        HttpStatus status = errorCode.isClientSideError() ?
-                HttpStatus.BAD_REQUEST :
-                HttpStatus.INTERNAL_SERVER_ERROR;
-
-        return ResponseEntity
-                .status(status)
-                .body(APIErrorResponse.of(
-                        false, errorCode, errorCode.getMessage(e)
-                ));
-    }
 }
