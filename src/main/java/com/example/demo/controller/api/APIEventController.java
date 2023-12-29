@@ -1,5 +1,10 @@
 package com.example.demo.controller.api;
 
+import com.example.demo.constatnt.ErrorCode;
+import com.example.demo.dto.APIErrorResponse;
+import com.example.demo.exception.GeneralException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,7 +20,8 @@ public class APIEventController {
 
     @PostMapping("/events")
     public Boolean createEvent() {
-        return true;
+        throw new RuntimeException("hello");
+//        return true;
     }
 
     @GetMapping("/events/{eventId}")
@@ -33,4 +39,17 @@ public class APIEventController {
         return true;
     }
 
+    @ExceptionHandler
+    public ResponseEntity<APIErrorResponse> general(GeneralException e){
+        ErrorCode errorCode = e.getErrorCode();
+        HttpStatus status = errorCode.isClientSideError() ?
+                HttpStatus.BAD_REQUEST :
+                HttpStatus.INTERNAL_SERVER_ERROR;
+
+        return ResponseEntity
+                .status(status)
+                .body(APIErrorResponse.of(
+                        false, errorCode, errorCode.getMessage(e)
+                ));
+    }
 }
